@@ -1,5 +1,10 @@
 {
   "dependencies": {
+    "express": "^5.1.0",
     "mongoose": "^8.15.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch app.js"
   }
 }
