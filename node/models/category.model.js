@@ -1,4 +1,5 @@
 import { model, Schema }  from "mongoose";
+import recipeModel from "./recipe.model";
 
 const categorySchema=new Schema({
     code:Number,
