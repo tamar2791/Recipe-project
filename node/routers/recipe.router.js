@@ -3,6 +3,7 @@ import { Router } from "express";
 const router=Router();
 
 router.get("/",getAllRecipes);
+router.get("/",getAllMyRecipes);
 router.get("/:id", getRecipeById);
 router.get("/:preper-time", getRecipeByPreperTime);
 router.post("/", addRecipe);

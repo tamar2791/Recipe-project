@@ -4,7 +4,7 @@ const recipeSchema = new Schema({
     name: String,
     description: String,
     categories: [],
-    preparationTime: Number,
+    preparTime: Number,
     difficultyLevel: { type: Number, min: 1, max: 5 },
     dateAdded: { type: Date, default: Date.now },
     arrLayers:[{
@@ -14,6 +14,11 @@ const recipeSchema = new Schema({
     instructions:[String],
     img:String,
     isPrivate: { type: Boolean, default: true },
-    owner:{}
+    owner:{
+        _id:{
+            type:Schema.Types.ObjectId,ref:'users'
+        },
+        name:String
+    }
 })
 export default model('recipe', recipeSchema);
