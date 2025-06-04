@@ -45,14 +45,14 @@ export const getAllUsers = async (req, res, next) => {
 export const updatePassword = async (req, res, next) => {
     try {
         const { _id } = req.myUser;
-        const { password } = req.body;
-        if(password!=req.myUser.password)
+        const { oldPassword,newPassword } = req.body;
+        if(oldPassword!=req.myUser.password)
             return next({ message: 'password conflict', status: 409});
         const user = await User.findById(_id);
         if (!user) {
             return next({ message: 'user not found', status: 404 });
         }
-        user.password = password;
+        user.password = newPassword;
         await user.save();
         res.json({ message: 'password updated successfully' });
     } catch (error) {
