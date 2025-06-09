@@ -7,7 +7,7 @@ const userSchema=new Schema({
     password:{ type: String, required: true },
     email:{ type: String,unique: true, required: true },
     address:String,
-    role:{ type: String, enum: ['admin', 'user', 'guest'], default: 'user' }
+    role:{ type: String, enum: ['admin', 'user', 'guest'], default: 'guest' }
 })
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
