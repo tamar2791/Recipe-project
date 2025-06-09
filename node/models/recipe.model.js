@@ -1,12 +1,15 @@
 import { model, Schema } from "mongoose";
 
 const recipeSchema = new Schema({
-    name: String,
+    name: {type:String,required:true},
     description: String,
-    categories: [],
+    categories: [{
+        _id:{type:Schema.Types.ObjectId,ref:'categories'},
+        desc:String
+    }],
     preparTime: Number,
     difficultyLevel: { type: Number, min: 1, max: 5 },
-    dateAdded: { type: Date, default: Date.now },
+    dateAdded: { type: Date, default: Date.now() },
     arrLayers:[{
         description: String,
         ingredients:[String]
