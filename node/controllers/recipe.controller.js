@@ -1,17 +1,25 @@
-/*
-    router.get("/",getAllRecipes);✅
-    router.get("/",getAllMyRecipes);✅
-    router.get("/:id", getRecipeById);✅
-    router.get("/:preper-time", getRecipeByPreperTime);✅
-    router.post("/", addRecipe);
-    router.put("/:id", updateRecipe);
-    router.delete("/:id", deleteRecipe);
-*/
 import Recipe from '../models/recipe.model.js'
+import Category from '../models/category.model.js'
 
 export const getAllRecipes = async (req, res, next) => {
     try {
-        const recipes = await Recipe.find();
+        const _id = req.myUser ? req.myUser._id : null;
+        const { search, limit, page } = req.query;
+        const query = {};
+        if (_id) {
+            query.$or = [
+                { isPrivate: false },
+                { isPrivate: true, owner: currentUserId }
+            ];
+        } else {
+            query.isPrivate = false;
+        }
+        if (search) {
+            query.name = { $regex: search, $options: 'i' };
+        }
+        limit = parseInt(limit) || await Recipe.countDocuments();
+        const recipes = await Recipe.find(query).skip(skip).limit(parsedLimit)
+        const skip = ((page ? parseInt(page) : 1) - 1) * limit;
         res.json(recipes);
     } catch (error) {
         next({ message: error.message });
@@ -21,6 +29,8 @@ export const getAllRecipes = async (req, res, next) => {
 export const getAllMyRecipes = async (req, res, next) => {
     try {
         const { _id } = req.myUser;
+        if (!_id)
+            next({ message: 'you must login to see your recipes', status: 401 })
         const recipes = await Recipe.find(r => r.owner._id == _id)
         res.json(recipes)
     } catch (error) {
@@ -54,9 +64,27 @@ export const addRecipe = async (req, res, next) => {
     try {
         if (!req.myUser)
             return next({ message: 'you must login to add recipe', status: 400 })
-        const { _id, userName } = req.myUser
+        const { _id, userName } = req.myUser;
+
+        const { categories } = req.body;
+        const categoryIds = [];
+        const categoriesToUpdate = [];
+
+        for (const c of categories) {
+            const category = await Category.find({
+                name: { $regex: new RegExp(`^${c}$`, 'i') }
+            })
+            if (!category) {
+                category = new Category({ desc: c });
+                await category.save();
+            }
+            categoryIds.push(category._id);
+            categoriesToUpdate.push(category);
+        }
+
         const recipeData = {
             ...req.body,
+            categories: categoryIds,
             owner: {
                 _id: _id,
                 name: userName
@@ -64,7 +92,20 @@ export const addRecipe = async (req, res, next) => {
         };
         const newRecipe = new Recipe(recipeData);
         await newRecipe.save();
-        res.status(201).json(newRecipe);
+
+        for (const cat of categoriesToUpdate) {
+            if (!cat.recipeIds.includes(newRecipe._id)) {
+                cat.recipesArr.push({
+                    _id: newRecipe._id,
+                    name: newRecipe.name,
+                    desc: newRecipe.desc,
+                    ownerName: newRecipe.owner.name,
+                });
+                cat.recipesCount += 1;
+                await cat.save();
+            }
+        }
+        res.json(newRecipe);
     } catch (error) {
         next({ message: error.message })
     }
@@ -72,8 +113,11 @@ export const addRecipe = async (req, res, next) => {
 
 export const updateRecipe = async (req, res, next) => {
     try {
+        if (!req.myUser)
+            return next({ message: 'you must login to update recipe', status: 400 })
         const { id } = req.params;
         const { _id } = req.myUser;
+        const { categories } = req.body;
         if (id !== req.body._id)
             return next({ message: 'id conflict', status: 409 })
         const recipe = await Recipe.findById(id)
@@ -81,6 +125,7 @@ export const updateRecipe = async (req, res, next) => {
             return next({ message: 'recipe not found', status: 404 })
         if (recipe.owner._id !== _id)
             return next({ message: `you can't update recipe that you don't own.`, status: 403 })
+        
         const updateRecipe = await Recipe.findByIdAndUpdate(id, {
             $set: { ...recipe, ...req.body }
         })
@@ -92,6 +137,8 @@ export const updateRecipe = async (req, res, next) => {
 
 export const deleteRecipe = async (req, res, next) => {
     try {
+        if (!req.myUser)
+            return next({ message: 'you must login to delete recipe', status: 400 })
         const { id } = req.params;
         const { _id } = req.myUser;
         if (id !== req.body._id)
@@ -99,10 +146,20 @@ export const deleteRecipe = async (req, res, next) => {
         const recipe = await Recipe.findById(id)
         if (!recipe)
             return next({ message: 'recipe not found', status: 404 })
-        if (recipe.owner._id !== _id)
+        if (recipe.owner._id !== _id && myUser.role != 'admin')
             return next({ message: `you can't delete recipe that you don't own.`, status: 403 })
+        for (const cat of recipe.categories) {
+            const category = await Category.findById(cat).populate('recipes');
+            category.recipesCount -= 1;
+            if (category.recipesCount === 0) {
+                await Category.findByIdAndDelete(cat);
+            }
+            else {
+                await category.recipesArr.findByIdAndDelete(id)
+            }
+        }
         await Recipe.findByIdAndDelete(id)
-        res.json({message:'Recipe deleted succesfully'})
+        res.json({ message: 'Recipe deleted succesfully' })
     } catch (error) {
         next({ message: error.message })
     }

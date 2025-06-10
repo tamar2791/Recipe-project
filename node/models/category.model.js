@@ -6,11 +6,11 @@ const categorySchema=new Schema({
     recipesCount: { type: Number, default: 0 },
     recipesArr: {
         type: [{
-            _id: { type: Schema.Types.ObjectId, ref: 'recipes' },
+            _id: { type: Schema.Types.ObjectId},
             name: { type: String },
             desc: { type: String },
             ownerName: { type: String },
-        }]
+        }],default:[]
     }
 })
 export default model('category',categorySchema)

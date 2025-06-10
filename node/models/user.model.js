@@ -1,13 +1,14 @@
 import { model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Joi from "joi";
 
 const userSchema=new Schema({
     userName:{ type: String, required: true },
     password:{ type: String, required: true },
     email:{ type: String,unique: true, required: true },
     address:String,
-    role:{ type: String, enum: ['admin', 'user', 'guest'], default: 'guest' }
+    role:{ type: String, enum: ['admin', 'user'], default: 'user' }
 })
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
