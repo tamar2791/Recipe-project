@@ -3,8 +3,8 @@ import bcrypt from "bcryptjs";
 
 export const login=async (req,res,next)=>{
     try {
-        const {userName,password}=req.body;
-        const user=await User.find(u=>u.userName===userName && u.password===password);
+        const {email,password}=req.body;
+        const user=await User.findOne({ email: email});
         if (!user) {
             return next({ message: 'user not found', status: 401 });
         }
@@ -25,6 +25,7 @@ export const register = async (req, res, next) => {
         const { userName,password,email,address } = req.body;
         const user = new User({ userName,password,email,address });
         await user.save();
+        console.log("ggg");
         user.password = '****';
         const token = generateToken(user);
         res.json({ name: user.name, token,role: user.role });

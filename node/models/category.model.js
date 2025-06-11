@@ -1,5 +1,5 @@
 import { model, Schema }  from "mongoose";
-import recipeModel from "./recipe.model";
+import recipeModel from "./recipe.model.js";
 
 const categorySchema=new Schema({
     desc: { type: String, required: true },
