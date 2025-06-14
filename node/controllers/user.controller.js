@@ -13,7 +13,7 @@ export const login=async (req,res,next)=>{
             return next({ message: 'user not found', status: 401 });
         }
         const token = generateToken(user);
-        res.json({name: user.userName, token, role: user.role});
+        res.status(200).json({name: user.userName, token, role: user.role});
         next();
     } catch (error) {
         next({ message:error.message});
@@ -28,7 +28,7 @@ export const register = async (req, res, next) => {
         console.log("ggg");
         user.password = '****';
         const token = generateToken(user);
-        res.json({ name: user.name, token,role: user.role });
+        res.status(200).json({ name: user.name, token,role: user.role });
     } catch (error) {
         next({ message: error.message });
     }
@@ -37,7 +37,7 @@ export const register = async (req, res, next) => {
 export const getAllUsers = async (req, res, next) => {
     try {
         const users = await User.find();
-        res.json(users);
+        res.status(200).json(users);
     } catch (error) {
         next({ message: error.message });
     }

@@ -20,7 +20,7 @@ export const getAllRecipes = async (req, res, next) => {
         limit = parseInt(limit) || await Recipe.countDocuments();
         const skip = ((page ? parseInt(page) : 1) - 1) * limit;
         const recipes = await Recipe.find(query).skip(skip).limit(limit)
-        res.json(recipes);
+        res.status(200).json(recipes);
     } catch (error) {
         next({ message: error.message });
     }
@@ -32,7 +32,7 @@ export const getAllMyRecipes = async (req, res, next) => {
         if (!_id)
             next({ message: 'you must login to see your recipes', status: 401 })
         const recipes = await Recipe.find(r => r.owner._id == _id)
-        res.json(recipes)
+        res.status(200).json(recipes)
     } catch (error) {
         next({ message: error.message })
     }
@@ -44,7 +44,7 @@ export const getRecipeById = async (req, res, next) => {
         const recipe = await Recipe.findById(_id);
         if (!recipe)
             return next({ message: 'recipe not found', status: 404 })
-        res.json(recipe);
+        res.status(200).json(recipe);
     } catch (error) {
         next({ message: error.message });
     }
@@ -54,7 +54,7 @@ export const getRecipeByPreperTime = async (req, res, next) => {
     try {
         const { preparTime } = req.body;
         const recipes = await Recipe.find(r => r.preparTime <= preparTime)
-        res.json(recipes);
+        res.status(200).json(recipes);
     } catch (error) {
         next({ message: error.message });
     }
@@ -109,7 +109,7 @@ export const addRecipe = async (req, res, next) => {
                 { new: true }
             );
         }
-        res.json(newRecipe);
+        res.status(201).json(newRecipe);
     } catch (error) {
         console.log(error);
 
@@ -135,7 +135,7 @@ export const updateRecipe = async (req, res, next) => {
         const updateRecipe = await Recipe.findByIdAndUpdate(id, {
             $set: { ...recipe, ...req.body }
         })
-        res.json(updateRecipe)
+        res.status(200).json(updateRecipe)
     } catch (error) {
         next({ message: error.message })
     }
@@ -168,7 +168,7 @@ export const deleteRecipe = async (req, res, next) => {
             await category.save();
         }
         await Recipe.findByIdAndDelete(id)
-        res.json({ message: 'Recipe deleted succesfully' })
+        res.status(204).json({ message: 'Recipe deleted succesfully' })
     } catch (error) {
         next({ message: error.message })
     }
