@@ -55,7 +55,7 @@ export const updatePassword = async (req, res, next) => {
         }
         user.password = newPassword;
         await user.save();
-        res.json({ message: 'password updated successfully' });
+        res.status(200).json({ message: 'password updated successfully' });
     } catch (error) {
         next({ message: error.message });
     }
@@ -69,7 +69,7 @@ export const deleteUser = async (req, res, next) => {
             return next({ message: 'user not found', status: 404 });
         }
         await User.deleteOne({ _id });
-        res.json({ message: 'user deleted successfully' });
+        res.status(204).json({ message: 'user deleted successfully' });
     } catch (error) {
         next({ message: error.message });
     }
