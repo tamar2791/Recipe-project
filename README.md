@@ -1,20 +1,20 @@
-# 🍳 אפליקציית מתכונים - Recipe Management System
+# 🍳 Recipe Management System
 
-## תיאור הפרויקט
-מערכת מקיפה לניהול מתכונים הבנויה עם Node.js ו-Angular. המערכת מאפשרת למשתמשים להוסיף, לערוך, למחוק ולצפות במתכונים עם תמיכה בקטגוריות, שכבות ומרכיבים.
+## Project Description
+A comprehensive recipe management system built with Node.js and Angular. The system allows users to add, edit, delete, and view recipes with support for categories, layers, and ingredients.
 
-## ארכיטקטורה
-הפרויקט מורכב משני חלקים עיקריים:
-- **Backend (Node.js)** - שרת API עם MongoDB
-- **Frontend (Angular)** - ממשק משתמש
+## Architecture
+The project consists of two main parts:
+- **Backend (Node.js)** - API server with MongoDB
+- **Frontend (Angular)** - User interface
 
-## 🛠️ טכנולוgiות
+## 🛠️ Technologies
 
 ### Backend
 - Node.js + Express.js
 - MongoDB + Mongoose
 - JWT Authentication
-- bcryptjs להצפנת סיסמאות
+- bcryptjs for password encryption
 - CORS support
 
 ### Frontend
@@ -24,82 +24,82 @@
 - RxJS
 - HTTP Client
 
-## 📁 מבנה הפרויקט
+## 📁 Project Structure
 ```
-פרוייקט מתכונים/
+Recipe Project/
 ├── node/                    # Backend (Node.js)
-│   ├── controllers/         # קונטרולרים
-│   ├── models/             # מודלים של MongoDB
-│   ├── routers/            # נתיבי API
+│   ├── controllers/         # Controllers
+│   ├── models/             # MongoDB models
+│   ├── routers/            # API routes
 │   ├── middleweres/        # Middleware functions
-│   └── app.js              # קובץ הכניסה הראשי
+│   └── app.js              # Main entry file
 ├── Angular/                # Frontend (Angular)
 │   ├── src/
-│   │   ├── components/     # קומפוננטים
-│   │   ├── pages/          # עמודים
-│   │   ├── shared/         # שירותים ומודלים משותפים
+│   │   ├── components/     # Components
+│   │   ├── pages/          # Pages
+│   │   ├── shared/         # Shared services and models
 │   │   └── interceptors/   # HTTP Interceptors
 │   └── README.md
-└── README.md               # קובץ זה
+└── README.md               # This file
 ```
 
-## 🚀 התקנה והרצה
+## 🚀 Installation and Running
 
-### דרישות מוקדמות
-- Node.js (גרסה 18 ומעלה)
+### Prerequisites
+- Node.js (version 18 and above)
 - MongoDB
 - Angular CLI
 
-### התקנת Backend
+### Backend Installation
 ```bash
 cd node
 npm install
 ```
 
-### התקנת Frontend
+### Frontend Installation
 ```bash
 cd Angular
 npm install
 ```
 
-### הרצת המערכת
+### Running the System
 
-#### 1. הפעלת MongoDB
-ודא ש-MongoDB רץ על המחשב שלך
+#### 1. Start MongoDB
+Ensure MongoDB is running on your computer
 
-#### 2. הרצת השרת (Backend)
+#### 2. Run the Server (Backend)
 ```bash
 cd node
 npm start
 ```
-השרת ירוץ על: `http://localhost:5050`
+Server will run on: `http://localhost:5050`
 
-#### 3. הרצת הממשק (Frontend)
+#### 3. Run the Interface (Frontend)
 ```bash
 cd Angular
 ng serve
 ```
-הממשק ירוץ על: `http://localhost:4200`
+Interface will run on: `http://localhost:4200`
 
-## 📊 מסד הנתונים
+## 📊 Database
 
 ### Collections
-- **users** - משתמשים
-- **recipes** - מתכונים
-- **categories** - קטגוריות
+- **users** - Users
+- **recipes** - Recipes
+- **categories** - Categories
 
-### מודל משתמש (User)
+### User Model
 ```javascript
 {
   userName: String,
   email: String,
-  password: String (מוצפן),
+  password: String (encrypted),
   address: String,
   role: String (default: 'user')
 }
 ```
 
-### מודל מתכון (Recipe)
+### Recipe Model
 ```javascript
 {
   name: String,
@@ -124,52 +124,52 @@ ng serve
 ## 🔐 API Endpoints
 
 ### Authentication
-- `POST /user/login` - התחברות
-- `POST /user/register` - הרשמה
+- `POST /user/login` - Login
+- `POST /user/register` - Registration
 
 ### Recipes
-- `GET /recipe` - קבלת כל המתכונים
-- `GET /recipe/my-recipes` - המתכונים שלי (דורש אימות)
-- `GET /recipe/:id` - מתכון ספציפי
-- `POST /recipe` - הוספת מתכון (דורש אימות)
-- `PUT /recipe/:id` - עדכון מתכון (דורש אימות)
-- `DELETE /recipe/:id` - מחיקת מתכון (דורש אימות)
+- `GET /recipe` - Get all recipes
+- `GET /recipe/my-recipes` - My recipes (requires authentication)
+- `GET /recipe/:id` - Specific recipe
+- `POST /recipe` - Add recipe (requires authentication)
+- `PUT /recipe/:id` - Update recipe (requires authentication)
+- `DELETE /recipe/:id` - Delete recipe (requires authentication)
 
 ### Categories
-- `GET /category` - קבלת כל הקטגוריות
-- `POST /category` - הוספת קטגוריה (דורש אימות)
+- `GET /category` - Get all categories
+- `POST /category` - Add category (requires authentication)
 
-## ✨ תכונות עיקריות
+## ✨ Main Features
 
-### למשתמשים לא מחוברים
-- ✅ צפייה במתכונים ציבוריים
-- ✅ חיפוש וסינון מתכונים
-- ✅ צפייה בפרטי מתכון
+### For Non-logged Users
+- ✅ View public recipes
+- ✅ Search and filter recipes
+- ✅ View recipe details
 
-### למשתמשים מחוברים
-- ✅ כל התכונות של משתמש לא מחובר
-- ✅ הוספת מתכונים חדשים
-- ✅ עריכה ומחיקה של המתכונים שלי
-- ✅ צפייה במתכונים הפרטיים שלי
-- ✅ ניהול קטגוריות
+### For Logged Users
+- ✅ All features of non-logged users
+- ✅ Add new recipes
+- ✅ Edit and delete my recipes
+- ✅ View my private recipes
+- ✅ Category management
 
-### תכונות מתקדמות
-- 🔒 אבטחה עם JWT
-- 📱 עיצוב רספונסיבי
-- 🌐 תמיכה בעברית (RTL)
-- 🖼️ תמיכה בתמונות
-- 📊 ניהול שכבות ומרכיבים מורכבים
+### Advanced Features
+- 🔒 JWT Security
+- 📱 Responsive design
+- 🌐 Hebrew support (RTL)
+- 🖼️ Image support
+- 📊 Complex layers and ingredients management
 
-## 🔧 הגדרות
+## 🔧 Configuration
 
-### משתני סביבה (Backend)
+### Environment Variables (Backend)
 ```
 JWT_SECRET=your_jwt_secret_key
 MONGODB_URI=mongodb://localhost:27017/recipes
 PORT=5050
 ```
 
-### הגדרות Angular
+### Angular Configuration
 ```typescript
 // src/environments/environment.ts
 export const environment = {
@@ -178,18 +178,18 @@ export const environment = {
 };
 ```
 
-## 🤝 תרומה לפרויקט
-1. Fork את הפרויקט
-2. צור branch חדש (`git checkout -b feature/amazing-feature`)
-3. Commit את השינויים (`git commit -m 'Add amazing feature'`)
-4. Push ל-branch (`git push origin feature/amazing-feature`)
-5. פתח Pull Request
+## 🤝 Contributing to the Project
+1. Fork the project
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Commit the changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📝 רישיון
-פרויקט זה הוא לצרכי לימוד ופיתוח.
+## 📝 License
+This project is for educational and development purposes.
 
-## 👨‍💻 מפתחים
-- תמי - Full Stack Developer
+## 👨‍💻 Developers
+- Tami - Full Stack Developer
 
-## 📞 יצירת קשר
-לשאלות ובעיות, אנא פתח issue בפרויקט.
+## 📞 Contact
+For questions and issues, please open an issue in the project.
