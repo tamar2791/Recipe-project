@@ -1,69 +1,69 @@
-# אפליקציית מתכונים - Angular Frontend
+# Recipe Management App - Angular Frontend
 
-## תיאור הפרויקט
-אפליקציית Angular לניהול מתכונים עם אפשרות להוספה, עריכה, מחיקה וצפייה במתכונים.
+## Project Description
+Angular application for recipe management with capabilities to add, edit, delete, and view recipes.
 
-## טכנולוגיות
+## Technologies
 - Angular 18
 - Angular Material
 - TypeScript
 - RxJS
 
-## התקנה והרצה
+## Installation and Running
 
-### דרישות מוקדמות
-- Node.js (גרסה 18 ומעלה)
-- npm או yarn
+### Prerequisites
+- Node.js (version 18 and above)
+- npm or yarn
 
-### התקנה
+### Installation
 ```bash
 npm install
 ```
 
-### הרצה במצב פיתוח
+### Development Server
 ```bash
 ng serve
 ```
-האפליקציה תרוץ על: `http://localhost:4200`
+The application will run on: `http://localhost:4200`
 
-### בניית הפרויקט לפרודקשן
+### Production Build
 ```bash
 ng build
 ```
 
-## מבנה הפרויקט
+## Project Structure
 
-### קומפוננטים עיקריים
-- **LoginComponent** - התחברות למערכת
-- **RegisterComponent** - הרשמה למערכת
-- **AllRecipesComponent** - תצוגת כל המתכונים
-- **RecipeDetailsComponent** - פרטי מתכון ספציפי
-- **RecipeFormComponent** - הוספה ועריכה של מתכונים
-- **RecipeItemComponent** - תצוגת מתכון בודד ברשימה
-- **NavbarComponent** - תפריט ניווט
+### Main Components
+- **LoginComponent** - System login
+- **RegisterComponent** - System registration
+- **AllRecipesComponent** - Display all recipes
+- **RecipeDetailsComponent** - Specific recipe details
+- **RecipeFormComponent** - Add and edit recipes
+- **RecipeItemComponent** - Single recipe display in list
+- **NavbarComponent** - Navigation menu
 
-### שירותים
-- **AuthService** - ניהול אימות משתמשים
-- **RecipeService** - ניהול מתכונים
-- **CategoryService** - ניהול קטגוריות
+### Services
+- **AuthService** - User authentication management
+- **RecipeService** - Recipe management
+- **CategoryService** - Category management
 
-### מודלים
-- **User** - מודל משתמש
-- **Recipe** - מודל מתכון
-- **Category** - מודל קטגוריה
+### Models
+- **User** - User model
+- **Recipe** - Recipe model
+- **Category** - Category model
 
-## תכונות עיקריות
-- ✅ התחברות והרשמה
-- ✅ צפייה במתכונים (כולל אורחים)
-- ✅ הוספת מתכונים (משתמשים מחוברים)
-- ✅ עריכה ומחיקה של מתכונים שלי
-- ✅ סינון מתכונים
-- ✅ ניהול קטגוריות
-- ✅ תמיכה בשכבות ומרכיבים
-- ✅ העלאת תמונות
+## Main Features
+- ✅ Login and registration
+- ✅ View recipes (including guests)
+- ✅ Add recipes (logged-in users)
+- ✅ Edit and delete my recipes
+- ✅ Filter recipes
+- ✅ Category management
+- ✅ Support for layers and ingredients
+- ✅ Image upload
 
-## הגדרות סביבה
-קובץ `src/environments/environment.ts`:
+## Environment Configuration
+File `src/environments/environment.ts`:
 ```typescript
 export const environment = {
   production: false,
@@ -71,21 +71,21 @@ export const environment = {
 };
 ```
 
-## נתיבים
-- `/` - ברירת מחדל (מפנה ל-recipes)
-- `/login` - התחברות
-- `/register` - הרשמה
-- `/recipes` - כל המתכונים
-- `/add` - הוספת מתכון חדש
-- `/recipe/:id` - פרטי מתכון
-- `/recipe-form/:id` - עריכת מתכון
+## Routes
+- `/` - Default (redirects to recipes)
+- `/login` - Login
+- `/register` - Registration
+- `/recipes` - All recipes
+- `/add` - Add new recipe
+- `/recipe/:id` - Recipe details
+- `/recipe-form/:id` - Edit recipe
 
-## אבטחה
+## Security
 - JWT Token authentication
-- HTTP Interceptor לשליחת טוקן
-- Route guards (אם נדרש)
+- HTTP Interceptor for token sending
+- Route guards (if required)
 
-## סגנון
+## Styling
 - Angular Material Design
-- תמיכה בעברית (RTL)
-- עיצוב רספונסיבי
+- Hebrew support (RTL)
+- Responsive design
