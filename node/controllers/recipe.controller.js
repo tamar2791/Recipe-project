@@ -40,8 +40,8 @@ export const getAllMyRecipes = async (req, res, next) => {
 
 export const getRecipeById = async (req, res, next) => {
     try {
-        const { _id } = req.params;
-        const recipe = await Recipe.findById(_id);
+        const { id } = req.params;
+        const recipe = await Recipe.findById(id);
         if (!recipe)
             return next({ message: 'recipe not found', status: 404 })
         res.status(200).json(recipe);
