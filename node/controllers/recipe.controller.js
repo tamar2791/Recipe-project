@@ -72,6 +72,7 @@ export const addRecipe = async (req, res, next) => {
         const { userName } = req.myUser;
 
         const { categories } = req.body;
+        console.log('Categories from request:', categories);
         const categoryIds = [];
         const categoriesToUpdate = [];
 
@@ -82,6 +83,7 @@ export const addRecipe = async (req, res, next) => {
             if (!category) {
                 category = new Category({ desc: c });
                 await category.save();
+                console.log('Created new category:', category);
             }
             categoryIds.push(category._id);
             categoriesToUpdate.push(category);
@@ -127,14 +129,14 @@ export const updateRecipe = async (req, res, next) => {
         if (!req.myUser)
             return next({ message: 'you must login to update recipe', status: 403 })
         const { id } = req.params;
-        const { _id } = req.myUser;
+        const userId = req.myUser.id || req.myUser._id;
         const { categories } = req.body;
         if (id !== req.body._id)
             return next({ message: 'id conflict', status: 409 })
         const recipe = await Recipe.findById(id)
         if (!recipe)
             return next({ message: 'recipe not found', status: 404 })
-        if (recipe.owner._id !== _id)
+        if (recipe.owner._id.toString() !== userId)
             return next({ message: `you can't update recipe that you don't own.`, status: 403 })
 
         const updateRecipe = await Recipe.findByIdAndUpdate(id, {
@@ -151,30 +153,33 @@ export const deleteRecipe = async (req, res, next) => {
         if (!req.myUser)
             return next({ message: 'you must login to delete recipe', status: 403 })
         const { id } = req.params;
-        const { _id } = req.myUser;
+        const userId = req.myUser.id || req.myUser._id;
         if (id !== req.body._id)
             return next({ message: 'id conflict', status: 409 })
         const recipe = await Recipe.findById(id)
         if (!recipe)
             return next({ message: 'recipe not found', status: 404 })
-        if (recipe.owner._id !== _id && myUser.role != 'admin')
+        if (recipe.owner._id.toString() !== userId && req.myUser.role != 'admin')
             return next({ message: `you can't delete recipe that you don't own.`, status: 403 })
         for (const cat of recipe.categories) {
             const category = await Category.findById(cat);
-            category.recipesCount -= 1;
-            if (category.recipesCount === 0) {
-                await Category.findByIdAndDelete(cat);
+            if (category) {
+                category.recipesCount -= 1;
+                if (category.recipesCount === 0) {
+                    await Category.findByIdAndDelete(cat);
+                }
+                else {
+                    category.recipesArr = category.recipesArr.filter(
+                        (r) => !r._id.equals(recipe._id)
+                    );
+                    await category.save();
+                }
             }
-            else {
-                category.recipesArr = category.recipesArr.filter(
-                    (r) => !r._id.equals(recipe._id)
-                );
-            }
-            await category.save();
         }
         await Recipe.findByIdAndDelete(id)
         res.status(204).json({ message: 'Recipe deleted succesfully' })
     } catch (error) {
+        console.error('Delete recipe error:', error);
         next({ message: error.message })
     }
 }
