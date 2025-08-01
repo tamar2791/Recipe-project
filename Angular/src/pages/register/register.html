@@ -1,0 +1,62 @@
+<mat-card>
+    <mat-card-title>הרשמה 🤩</mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+            <!-- שם משתמש -->
+            <mat-form-field>
+                <mat-label>שם משתמש</mat-label>
+                <input matInput formControlName="userName" required>
+                @if (registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched) {
+                <mat-error>יש להזין שם משתמש</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- מייל -->
+            <mat-form-field>
+                <mat-label>מייל</mat-label>
+                <input matInput type="email" formControlName="email" required>
+                @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+                <mat-error>הכנס מייל תקין</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- סיסמא -->
+            <mat-form-field>
+                <mat-label>סיסמא</mat-label>
+                <input matInput type="password" formControlName="password" required minlength="8"
+                    pattern="^(?=.*[a-zA-Z])(?=.*\d).{8,}$">
+                @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']) {
+                <mat-error>יש להזין סיסמא</mat-error>
+                } @else if (registerForm.get('password')?.touched &&
+                registerForm.get('password')?.errors?.['minlength']) {
+                <mat-error>סיסמא חייבת להכיל לפחות 8 תווים</mat-error>
+                } @else if (registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern'])
+                {
+                <mat-error>הסיסמא חייבת לכלול לפחות אות אחת וספרה אחת</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- כתובת -->
+            <mat-form-field>
+                <mat-label>כתובת</mat-label>
+                <input matInput formControlName="address" required>
+                @if (registerForm.get('address')?.invalid && registerForm.get('address')?.touched) {
+                <mat-error>יש להזין כתובת</mat-error>
+                }
+            </mat-form-field>
+
+            <!-- כפתור שליחה -->
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">הרשמה</button>
+
+            <!-- שגיאה מהשרת -->
+            @if (errorMessage) {
+            <div class="error-message">
+                {{ errorMessage }}
+            </div>
+            }
+
+        </form>
+
+    </mat-card-content>
+</mat-card>

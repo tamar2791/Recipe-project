@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-title>התחברות 🤗</mat-card-title>
+    <mat-card-content>
+
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+
+            <mat-form-field>
+                <mat-label>מייל</mat-label>
+                <input matInput type="email" id="email" name="email" required email [(ngModel)]="loginData.email"
+                    #email="ngModel" />
+
+                @if (email.invalid && email.touched) {
+                <mat-error>הכנס מייל תקין</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>סיסמא</mat-label>
+                <input matInput type="password" id="password" name="password" required minlength="8"
+                    pattern="^(?=.*[א-תa-zA-Z])(?=.*\d).{8,}$" [(ngModel)]="loginData.password" #password="ngModel" />
+                @if (password.touched && password.errors?.['required']) {
+                <mat-error>יש להזין סיסמא</mat-error>
+                } @else if (password.touched && password.errors?.['minlength']) {
+                <mat-error>סיסמא חייבת להכיל לפחות 8 תווים</mat-error>
+                } @else if (password.touched && password.errors?.['pattern']) {
+                <mat-error>הסיסמא חייבת לכלול לפחות אות אחת וספרה אחת</mat-error>
+                }
+
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">כניסה</button>
+            <button mat-button type="button" (click)="goToRegister()">הרשמה</button>
+
+
+            @if (loginError) {
+            <div class="login-error">
+                {{ loginError }}
+            </div>
+            }
+        </form>
+    </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,12 @@
+<mat-toolbar color="primary" class="navbar">
+    <span>היי, {{ username }}</span>
+
+    <span class="spacer"></span>
+
+    <a mat-button [routerLink]="'/recipes'">כל המתכונים</a>
+
+    <a mat-button [routerLink]="'/register'" *ngIf="!authService.isLoggedIn()">הרשמה</a>
+    <a mat-button [routerLink]="'/login'" *ngIf="!authService.isLoggedIn()">התחברות</a>
+    <a mat-button [routerLink]="'/add'" *ngIf="authService.isLoggedIn()">הוספת מתכון</a>
+    <button mat-button (click)="logout()" *ngIf="authService.isLoggedIn()">התנתקות</button>
+</mat-toolbar>

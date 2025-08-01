@@ -1,0 +1,147 @@
+// -----------------------------
+// משתני צבעים חדשים - Modern Design
+// -----------------------------
+$color-background: #0f172a;
+$color-surface: #1e293b;
+$color-primary-text: #f1f5f9;
+$color-secondary-text: #94a3b8;
+$color-primary-button: #2563eb;
+$color-secondary-button: #10b981;
+$color-accent: #f59e0b;
+$color-error: #ef4444;
+
+// -----------------------------
+// כלליים לדף המתכונים - Dark Theme
+// -----------------------------
+:host {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    color: $color-primary-text;
+    direction: rtl;
+    min-height: 100vh;
+}
+
+// -----------------------------
+// טופס סינון - Modern Style
+// -----------------------------
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(30, 41, 59, 0.8);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+
+    mat-form-field {
+        width: 280px;
+        direction: rtl;
+        
+        .mat-mdc-form-field {
+            background-color: rgba(51, 65, 85, 0.6);
+            border-radius: 12px;
+        }
+    }
+
+    button[type="submit"] {
+        height: 56px;
+        padding: 0 32px;
+        background: linear-gradient(45deg, $color-primary-button, $color-secondary-button);
+        color: white;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+    }
+}
+
+
+// -----------------------------
+// רשימת המתכונים - Modern Grid
+// -----------------------------
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    margin-top: 1rem;
+}
+
+// -----------------------------
+// אנימציית טעינה - Modern Spinner
+// -----------------------------
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    margin: 3rem 0;
+    
+    mat-spinner {
+        --mdc-circular-progress-active-indicator-color: $color-secondary-button;
+    }
+}
+
+// -----------------------------
+// הודעה כאשר אין תוצאות - Modern Empty State
+// -----------------------------
+.no-results {
+    text-align: center;
+    margin-top: 4rem;
+    color: $color-secondary-text;
+    font-size: 1.2em;
+    font-weight: 500;
+    background: rgba(30, 41, 59, 0.6);
+    padding: 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+mat-card {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin: 2rem;
+    color: $color-primary-text !important;
+}
+
+:host {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-icon {
+    margin-left: 8px;
+}
+
+// -----------------------------
+// כותרת ראשית - Modern Title
+// -----------------------------
+mat-card-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    background: linear-gradient(45deg, $color-primary-button, $color-secondary-button, $color-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 2rem;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.filter-button {
+    gap: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

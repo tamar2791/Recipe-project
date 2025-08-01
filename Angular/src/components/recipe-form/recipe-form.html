@@ -1,0 +1,145 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container" novalidate>
+    <mat-card>
+        <mat-card-title>{{ isEditMode ? 'עריכת מתכון:' : 'הוספת מתכון חדש:' }}</mat-card-title>
+
+        <mat-card-content>
+
+            <!-- שם המתכון -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>שם המתכון</mat-label>
+                <input matInput formControlName="name" required />
+                <mat-error *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">
+                    חובה להזין שם
+                </mat-error>
+            </mat-form-field>
+
+            <!-- תיאור -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>תיאור</mat-label>
+                <textarea matInput formControlName="description" required></textarea>
+                <mat-error *ngIf="form.get('description')?.hasError('required') && form.get('description')?.touched">
+                    חובה להזין תיאור
+                </mat-error>
+            </mat-form-field>
+
+            <!-- קטגוריות -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>קטגוריות</mat-label>
+                <mat-select formControlName="categories" multiple>
+                    <mat-option *ngFor="let category of allCategories" [value]="category._id">
+                        {{ category.description }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('categories')?.hasError('required') && form.get('categories')?.touched">
+                    חובה לבחור קטגוריה אחת לפחות
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>הוסף קטגוריה חדשה</mat-label>
+                <input matInput [(ngModel)]="newCategory" [ngModelOptions]="{standalone: true}"
+                    (keydown.enter)="addNewCategory()" />
+
+                <button mat-icon-button matSuffix type="button" (click)="addNewCategory()" class="add-icon-button">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-form-field>
+
+
+
+            <!-- זמן הכנה -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>זמן הכנה (בדקות)</mat-label>
+                <input matInput type="number" formControlName="time" required />
+                <mat-error *ngIf="form.get('time')?.hasError('required') && form.get('time')?.touched">
+                    חובה להזין זמן הכנה
+                </mat-error>
+                <mat-error *ngIf="form.get('time')?.hasError('min') && form.get('time')?.touched">
+                    הזמן חייב להיות לפחות דקה אחת
+                </mat-error>
+            </mat-form-field>
+
+            <!-- דרגת קושי -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>דרגת קושי (1-5)</mat-label>
+                <input matInput type="number" formControlName="level" min="1" max="5" required />
+                <mat-error *ngIf="form.get('level')?.hasError('required') && form.get('level')?.touched">
+                    חובה להזין דרגת קושי
+                </mat-error>
+                <mat-error
+                    *ngIf="(form.get('level')?.hasError('min') || form.get('level')?.hasError('max')) && form.get('level')?.touched">
+                    דרגת קושי חייבת להיות בין 1 ל-5
+                </mat-error>
+            </mat-form-field>
+
+            <!-- תמונה -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>קישור לתמונה</mat-label>
+                <input matInput formControlName="img" />
+                <mat-error *ngIf="form.get('img')?.hasError('required')&&form.get('img')?.touched">
+                    חובה להזין קישור לתמונה
+                </mat-error>
+                <mat-error *ngIf="form.get('img')?.hasError('pattern')&&form.get('img')?.touched">
+                    כתובת התמונה חייבת להיות תקינה
+                </mat-error>
+            </mat-form-field>
+
+            <!-- האם פרטי -->
+            <mat-checkbox formControlName="isPrivate" class="is">האם המתכון פרטי?</mat-checkbox>
+
+            <hr />
+
+
+
+            <!-- שכבות -->
+            <div class="section-title">שכבות:</div>
+            <div formArrayName="layers">
+                <div *ngFor="let layer of layers.controls; let l = index" [formGroupName]="l" class="layer-box">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>תיאור שכבה</mat-label>
+                        <input matInput formControlName="description" />
+                    </mat-form-field>
+
+                    <!-- מרכיבים לשכבה -->
+                    <div formArrayName="ingredients">
+                        <mat-form-field *ngFor="let ing of getIngredients(l).controls; let ingIndex = index"
+                            appearance="outline" class="full-width">
+                            <mat-label>שכבה {{l+1}} מרכיב {{ ingIndex + 1 }}</mat-label>
+                            <input matInput [formControlName]="ingIndex" (input)="onIngredientChange(l,ingIndex)" />
+
+                        </mat-form-field>
+                    </div>
+
+                    <button mat-stroked-button color="warn" (click)="removeLayer(l)" type="button">
+                        <mat-icon>delete</mat-icon>מחק שכבה
+                    </button>
+                    <hr />
+                </div>
+            </div>
+            <button mat-stroked-button color="primary" type="button" (click)="addLayer()" class="button-add">
+                <mat-icon>add</mat-icon> הוסף שכבה
+            </button>
+        </mat-card-content>
+
+        <!-- הוראות הכנה -->
+        <mat-divider></mat-divider>
+
+        <div class="ins">הוראות הכנה:</div>
+        <div formArrayName="instructions">
+            <mat-form-field *ngFor="let instr of instructions.controls; let i = index" appearance="outline"
+                class="full-width">
+                <mat-label>שלב {{ i + 1 }} </mat-label>
+                <input matInput [formControlName]="i" (input)="onInstructionsChange(i)" />
+            </mat-form-field>
+        </div>
+
+        <hr />
+
+        <mat-card-actions align="end">
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+                {{ isEditMode ? 'עדכון מתכון' : 'שמור מתכון' }}
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>
