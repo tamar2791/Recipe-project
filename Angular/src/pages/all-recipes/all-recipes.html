@@ -1,0 +1,70 @@
+<mat-card>
+    <mat-card-title>כל המתכונים💕</mat-card-title>
+
+    <mat-card-content>
+
+        <!-- טופס סינון -->
+        <form class="filters" (ngSubmit)="onFilterChange()">
+            <mat-form-field appearance="outline">
+                <mat-label>חפש לפי שם</mat-label>
+                <input matInput [(ngModel)]="search" name="search">
+
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>בחר קטגוריה</mat-label>
+                <mat-select [(ngModel)]="selectedCategory" name="selectedCategory">
+                    <mat-option value="">כל הקטגוריות</mat-option>
+                    <mat-option *ngFor="let category of categories | async" [value]="category._id">
+                        {{ category.description }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>זמן הכנה מקסימלי</mat-label>
+                <input matInput type="number" [(ngModel)]="selectedMaxTime" name="selectedMaxTime" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" class="filter-button">
+                <mat-icon>search</mat-icon>
+                סנן
+            </button>
+
+            @if (isLoggedIn()) {
+            <button mat-raised-button 
+                    [color]="showMyRecipes ? 'accent' : 'basic'" 
+                    type="button" 
+                    (click)="toggleMyRecipes()" 
+                    class="my-recipes-button">
+                <mat-icon>person</mat-icon>
+                {{ showMyRecipes ? 'כל המתכונים' : 'המתכונים שלי' }}
+            </button>
+            }
+
+
+
+
+        </form>
+
+        <!-- רשימת המתכונים -->
+        <div class="recipe-list">
+            @for (recipe of recipes; track recipe._id) {
+            <app-recipe-item [recipe]="recipe"></app-recipe-item>
+            }
+        </div>
+
+
+        <!-- אנימציית טעינה -->
+        <div class="spinner-container" *ngIf="isLoading">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+
+        <!-- הודעה אם לא נמצאו מתכונים -->
+        <div class="no-results" *ngIf="recipes.length === 0 && !isLoading">
+            <p>לא נמצאו מתכונים תואמים</p>
+        </div>
+
+    </mat-card-content>
+</mat-card>

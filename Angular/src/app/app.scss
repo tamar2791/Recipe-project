@@ -1,0 +1,61 @@
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  background-attachment: fixed;
+}
+
+.main-content {
+  min-height: calc(100vh - 64px);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Global Material Design overrides for dark theme
+.mat-mdc-card {
+  background: rgba(30, 41, 59, 0.9) !important;
+  color: #f1f5f9 !important;
+}
+
+.mat-mdc-form-field {
+  .mdc-text-field {
+    background-color: rgba(51, 65, 85, 0.6) !important;
+  }
+  
+  .mdc-floating-label {
+    color: #94a3b8 !important;
+  }
+  
+  .mdc-text-field--focused .mdc-floating-label {
+    color: #2563eb !important;
+  }
+}
+
+.mat-mdc-button {
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.mat-mdc-raised-button {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  
+  &:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+}

@@ -1,0 +1,17 @@
+<mat-card class="recipe-card" [routerLink]="['/recipe',recipe._id]" style="cursor: pointer;">
+    <img mat-card-image [src]="recipe.img" alt="{{ recipe.name }}" />
+
+    <mat-card-content>
+        <h3>{{ recipe.name }}</h3>
+        <p class="recipe-time">
+            <mat-icon>alarm</mat-icon>
+            {{recipe.time}} דקות
+        </p>
+
+        <div class="stars">
+            <mat-icon *ngFor="let filled of getDifficulityArray()" color="primary">
+                {{ filled ? 'star' : 'star_border' }}
+            </mat-icon>
+        </div>
+    </mat-card-content>
+</mat-card>

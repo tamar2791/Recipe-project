@@ -1,0 +1,145 @@
+:host {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  min-height: 100vh;
+  display: block;
+  padding: 2rem;
+}
+
+mat-card {
+  background: rgba(30, 41, 59, 0.9) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #10b981, #f59e0b);
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+mat-card-title {
+  font-weight: 800;
+  font-size: 2.2em;
+  margin: 2rem 0;
+  text-align: center;
+  background: linear-gradient(45deg, #2563eb, #10b981, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #f1f5f9;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: 3rem 0 1rem;
+  color: #f59e0b;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(51, 65, 85, 0.4);
+  border-radius: 12px;
+  border-right: 4px solid #10b981;
+}
+
+// שדות קלט - Modern Input Fields
+mat-form-field {
+  direction: rtl;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  
+  .mdc-text-field {
+    background-color: rgba(51, 65, 85, 0.6) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .mdc-text-field:hover {
+    border-color: rgba(37, 99, 235, 0.5) !important;
+    background-color: rgba(51, 65, 85, 0.8) !important;
+  }
+  
+  .mdc-text-field--focused {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
+  }
+
+  .mat-mdc-form-field-label {
+    font-weight: 500;
+    text-align: right;
+    direction: rtl;
+    color: #94a3b8 !important;
+  }
+
+  input, textarea {
+    font-weight: 500;
+    color: #f1f5f9 !important;
+  }
+}
+
+.ins {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 2rem 0 1rem;
+  color: #10b981;
+  text-align: center;
+}
+
+.add-icon-button {
+  margin-left: 12px;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: #ffffff;
+    background: #10b981;
+    transform: scale(1.1);
+  }
+}
+
+button {
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &[color="primary"] {
+    background: linear-gradient(45deg, #2563eb, #10b981) !important;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    }
+  }
+  
+  &[color="warn"] {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    }
+  }
+}
