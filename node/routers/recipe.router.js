@@ -5,7 +5,7 @@ import { auth } from "../middleweres/checkAuth.middleware.js";
 const router=Router();
 
 router.get("/",getAllRecipes);
-router.get("/",auth, getAllMyRecipes);
+router.get("/my-recipes",auth, getAllMyRecipes);
 router.get("/:id", getRecipeById);
 router.get("/:preper-time", getRecipeByPreperTime);
 router.post("/",auth,  addRecipe);

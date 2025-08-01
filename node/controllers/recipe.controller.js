@@ -28,10 +28,14 @@ export const getAllRecipes = async (req, res, next) => {
 
 export const getAllMyRecipes = async (req, res, next) => {
     try {
-        const { _id } = req.myUser;
-        if (!_id)
-            next({ message: 'you must login to see your recipes', status: 401 })
-        const recipes = await Recipe.find(r => r.owner._id == _id)
+        if (!req.myUser) {
+            return next({ message: 'you must login to see your recipes', status: 401 })
+        }
+        const userId = req.myUser.id || req.myUser._id;
+        if (!userId)
+            return next({ message: 'you must login to see your recipes', status: 401 })
+        const recipes = await Recipe.find({ 'owner._id': userId })
+        console.log('Found recipes for user:', userId, 'count:', recipes.length);
         res.status(200).json(recipes)
     } catch (error) {
         next({ message: error.message })
@@ -64,7 +68,8 @@ export const addRecipe = async (req, res, next) => {
     try {
         if (!req.myUser)
             return next({ message: 'you must login to add recipe', status: 403 })
-        const { _id, userName } = req.myUser;
+        const _id = req.myUser.id || req.myUser._id;
+        const { userName } = req.myUser;
 
         const { categories } = req.body;
         const categoryIds = [];
